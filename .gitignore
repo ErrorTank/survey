@@ -3,4 +3,3 @@
 /.cache
 package-lock.json
 /.idea
-/dist

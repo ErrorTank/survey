@@ -4,7 +4,9 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "dev": "gulp dev"
+    "dev": "gulp dev",
+    "start": "node server/server.js --ext js --exec babel-node --ignore react",
+    "prod": "gulp build-prod"
   },
   "author": "",
   "license": "ISC",

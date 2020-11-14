@@ -1,4 +1,5 @@
 const path = require("path");
+console.log(process.env.NODE_ENV)
 require("dotenv").config({
     path: path.resolve(__dirname, process.env.NODE_ENV === "production" ? "./env/prod.env" : "./env/dev.env"),
 });

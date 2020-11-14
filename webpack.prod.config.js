@@ -60,6 +60,7 @@ module.exports = {
             },
         },
     },
+    devtool: false,
     plugins: [
         new webpack.ProgressPlugin(),
         new CopyWebpackPlugin([

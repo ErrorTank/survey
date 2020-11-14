@@ -44,22 +44,21 @@ module.exports = {
                 }
             }
         })],
+        runtimeChunk: 'single',
         splitChunks: {
             chunks: 'all',
+            maxInitialRequests: Infinity,
+            minSize: 0,
             cacheGroups: {
-                default: false,
-                vendors: false,
-                common: {
-                    name: 'common',
-                    minChunks: 2,
-                    chunks: 'async',
-                    priority: 10,
-                    reuseExistingChunk: true,
-                    enforce: true
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                        return `npm.${packageName.replace('@', '')}`;
+                    },
                 },
-                vendor: {test: /[\\/]node_modules[\\/]/, name: "vendor", chunks: "all"},
-            }
-        }
+            },
+        },
     },
     plugins: [
         new webpack.ProgressPlugin(),

@@ -13,7 +13,6 @@ const loadDbInstances = (appDb) => {
     require("./db/model/survey")(appDb);
 };
 
-
 const startServer = () => new Promise((resolve) => {
 
     const port = process.env.PORT || 4000;

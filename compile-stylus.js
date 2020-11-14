@@ -57,7 +57,7 @@ module.exports = {
         return {
             watch: () => {
                 chokidar
-                    .watch([`./**/*.styl`], {
+                    .watch([`./client/**/*.styl`], {
                         ignoreInitial: true
                     })
                     .on('add', function(event, path) {

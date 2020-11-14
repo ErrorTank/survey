@@ -40,6 +40,7 @@ module.exports = {
     },
   },
   plugins: [
+
     new webpack.ProgressPlugin(),
 
     new webpack.WatchIgnorePlugin(["public"]),
@@ -86,12 +87,13 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /plugin\.css$/,
-        include: [path.resolve(__dirname, "not_exist_path")],
-        loaders: ["style-loader", "css-loader"],
+        test: /\.css$/i,
+        include: path.join(__dirname, 'client'),
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.styl$/,
+        include: path.join(__dirname, 'client'),
         use: ["style-loader", "css-loader", "stylus-loader"],
       },
       {

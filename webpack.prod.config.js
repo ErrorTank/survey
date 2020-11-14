@@ -84,6 +84,7 @@ module.exports = {
 
             {
                 test: /\.html$/,
+                include: path.join(__dirname, 'client'),
                 use: [
                     {
                         loader: "html-loader"
@@ -92,10 +93,12 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
+                include: path.join(__dirname, 'client'),
                 use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.jsx?$/,
+                include: path.join(__dirname, 'client'),
                 use: [
                     {
                         loader: 'babel-loader',
@@ -107,6 +110,7 @@ module.exports = {
                 exclude: /node_modules/
             }, {
                 test: /\.styl$/,
+                include: path.join(__dirname, 'client'),
                 use: [
                     "style-loader",
                     "css-loader",

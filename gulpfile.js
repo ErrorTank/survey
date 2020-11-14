@@ -56,19 +56,27 @@ gulp.task("dev", (done) => {
 
 
 gulp.task("build-prod", (done) => {
-    rimraf('./dist/**/*', () => {
-        console.log("Delete old build successfully!");
-        return stylusCompiler.compile("dist", done).then(() => {
-            // spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
-            if (!/^win/.test(process.platform)) { // linux
-                return spawn("webpack", ["--config", " ./webpack.prod.config.js"], {stdio: "inherit"});
-            } else {
-                return spawn('cmd', ['/s', "/c", "webpack", "--config", "./webpack.prod.config.js"], {stdio: "inherit"});
-            }
-        }).catch(err => {
-            console.log(err);
+    return new Promise(res => {
+        rimraf('./dist/**/*', () => {
+            console.log("Delete old build successfully!");
+            return stylusCompiler.compile("dist", done).then(() => {
+                // spawn("node", ["./scripts/copy-assets", "prod"], {stdio: "inherit"})
+
+                if (!/^win/.test(process.platform)) { // linux
+
+                    spawn("webpack", [ "--config" , " ./webpack.prod.config.js"], {stdio: "inherit"});
+                } else {
+
+                    spawn('cmd', ['/s', "/c", "webpack",  "--config" , "./webpack.prod.config.js"], {stdio: "inherit"});
+                }
+                res()
+            }).catch(err => {
+                console.log(err);
+                res()
+            });
         });
-    });
+    })
+
 
 });
 

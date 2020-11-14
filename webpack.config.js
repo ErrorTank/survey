@@ -87,11 +87,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
-        include: path.join(__dirname, 'client'),
-        use: ['style-loader', 'css-loader'],
-      },
-      {
         test: /\.styl$/,
         include: path.join(__dirname, 'client'),
         use: ["style-loader", "css-loader", "stylus-loader"],

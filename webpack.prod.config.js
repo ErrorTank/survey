@@ -93,7 +93,6 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                include: path.join(__dirname, 'client'),
                 use: ['style-loader', 'css-loader'],
             },
             {

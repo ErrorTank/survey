@@ -9,6 +9,7 @@ import StepContent from "@material-ui/core/StepContent";
 import {CustomerIdStep} from "./steps/customer-id-step";
 import {CustomerInfoStep} from "./steps/customer-info-step";
 import {SurveyStep} from "./steps/survey-step";
+import {Button} from "@material-ui/core";
 
 function getSteps() {
     return ['Nhập mã khách hàng', 'Thông tin khách hàng', 'Đánh giá'];
@@ -41,7 +42,7 @@ function getStepContent(step, props) {
 
 const SurveyRoute = () => {
     useDocumentTitle("Khảo sát khách hàng");
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = React.useState(3);
     const [customer, setCustomer] = React.useState({});
     const [isExisted, setIsExisted] = React.useState(false);
     const steps = getSteps();
@@ -55,6 +56,8 @@ const SurveyRoute = () => {
     };
 
     const handleReset = () => {
+        setCustomer({});
+        setIsExisted(false);
         setActiveStep(0);
     };
     return (
@@ -87,6 +90,16 @@ const SurveyRoute = () => {
                                 </Step>
                             ))}
                         </Stepper>
+                        {activeStep === steps.length && (
+                            <div className="finish-dialog">
+                                <div className="success-text">
+                                    <i className="success-icon fas fa-check-circle"></i>  <span>Cảm ơn bạn đã tham gia đánh giá chất lượng dịch vụ của chúng tôi!</span>
+                                </div>
+                                <div style={{textAlign: "center", marginTop: "12px"}}>
+                                    <Button variant="contained"  color={"primary"} onClick={handleReset}>Bắt đầu lại</Button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </Paper>
             </div>

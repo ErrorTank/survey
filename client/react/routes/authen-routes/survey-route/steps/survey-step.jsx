@@ -11,8 +11,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import {StarRating} from "../../../../components/star-rating/star-rating";
 import Button from "@material-ui/core/Button";
+import {customerApi} from "../../../../../api/common/customer";
 
-export const SurveyStep = ({customer, handleBack, handleReset}) => {
+export const SurveyStep = ({customer, handleBack, handleNext}) => {
     let [locations, setLocations] = React.useState([]);
     let [services, setServices] = React.useState([]);
     let [loading, setLoading] = React.useState(true);
@@ -42,7 +43,15 @@ export const SurveyStep = ({customer, handleBack, handleReset}) => {
     };
 
     const submit = () => {
-
+        setSaving(true);
+        let data = {
+            location: location._id,
+            service: service._id,
+            rating,
+            text: text.trim()
+        }
+        customerApi.submitSurvey(data)
+            .then(() => handleNext())
     }
 
     return (

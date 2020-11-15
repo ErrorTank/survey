@@ -11,10 +11,7 @@ module.exports = () => {
     app.use(bodyParser.json({
         limit: '2mb'
     }));
-    app.use(cors({
-        origin: process.env.HOST,
-        optionsSuccessStatus: 200
-    }));
+
     app.use(helmet());
     app.use(compression());
     app.use((req, res, next) => {
@@ -42,6 +39,15 @@ module.exports = () => {
             res.sendFile(process.cwd() + "/" + process.env.HTML_DIR);
         }
     });
+    app.use("/api", cors({
+        origin: function (origin, callback) {
+            if ([process.env.HOST].indexOf(origin) !== -1) {
+                callback(null, true)
+            } else {
+                callback(new Error('Not allowed by CORS'))
+            }
+        }
+    }));
     return app;
 };
 

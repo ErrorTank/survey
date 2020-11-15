@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {FormGroup, Label, Input, Button} from 'reactstrap';
 import {LoadingInline} from "../loading-inline/loading-inline";
-import {mainApi} from "../../../api/common/main";
+import {mainApi} from "../../../api/common/auth";
 import {appCred} from "../../../app-loader";
 import {userInfo} from "../../../lib/states/common";
 

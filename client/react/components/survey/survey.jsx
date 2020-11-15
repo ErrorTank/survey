@@ -3,7 +3,7 @@ import {Button, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "reacts
 import classnames from "classnames";
 import {userInfo} from "../../../lib/states/common";
 import {StarRating} from "../star-rating/star-rating";
-import {mainApi} from "../../../api/common/main";
+import {mainApi} from "../../../api/common/auth";
 import {appCred} from "../../../app-loader";
 
 export const Survey = ({setNewMode}) => {

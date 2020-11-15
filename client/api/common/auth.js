@@ -2,11 +2,11 @@
 import {authenApi, guessApi} from "../api";
 
 
-export const mainApi = {
+export const authApi = {
     login(data){
         return guessApi.post("/login", data)
     },
-    submitSurvey(data){
-        return authenApi.post("/submit-survey", data)
+    auth(){
+        return authenApi.get("/auth")
     }
 };

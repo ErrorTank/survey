@@ -1,25 +1,21 @@
 
 import {authenApi} from "./api/api";
-import Cookies from "js-cookie";
-import {Cache} from "./lib/cache";
+import {authenCache} from "./lib/cache/common/authentication";
 
-const cookiesEngine = {
-    getItem: Cookies.get,
-    setItem: Cookies.set,
-    removeItem: Cookies.remove
-};
-export const appCred = new Cache(cookiesEngine);
+
 export const appLoader = {
     init() {
 
 
         authenApi.addHeader("Authorization", () => {
-            let token = appCred.get("token");
+            let token = authenCache.getAuthen();
             return token ? `Bearer ${token}` : null;
         });
 
-        appCred.set(null, "token");
-        return Promise.resolve();
+        return authenCache.loadAuthen().then(result => {
+
+            return Promise.resolve();
+        }).catch(err => Promise.resolve())
 
     }
 };

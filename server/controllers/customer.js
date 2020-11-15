@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../middlewares/auth");
-const {login, submitSurvey} = require("../db/controllers/main");
+const { submitSurvey, checkCustomer, createCustomer} = require("../db/controllers/customer");
 
 module.exports = () => {
-    router.post("/login", (req, res, next) => {
 
-        return login(req.body).then((data) => {
+    router.post("/create-customer",authorizationUserMiddleware, (req, res, next) => {
+
+        return createCustomer(req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.post("/check-customer", authorizationUserMiddleware, (req, res, next) => {
+
+        return checkCustomer(req.body).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

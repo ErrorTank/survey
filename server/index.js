@@ -10,7 +10,63 @@ const createRoutes = require("./routes");
 const errorHandlingMiddleware = require("./lib/error/error-handlers");
 const dbManager = require("./db/index");
 const loadDbInstances = (appDb) => {
-    require("./db/model/survey")(appDb);
+    let Survey = require("./db/model/survey")(appDb);
+    require("./db/model/customer")(appDb);
+    let Service = require("./db/model/service")(appDb);
+    let Location = require("./db/model/location")(appDb);
+    let User = require("./db/model/user")(appDb);
+    // Survey.deleteMany({}).then(() => console.log("Delete all surveys"))
+    // Service.deleteMany({}).then(() => console.log("Delete all services"))
+    // Location.deleteMany({}).then(() => console.log("Delete all locations"))
+    // Service.insertMany([
+    //     {name: "Chăm sóc da"},
+    //     {name: "Điều trị mụn"},
+    //     {name: "Tẩy da chết"},
+    //     {name: "Cải tạo da bằng công nghệ ABC"},
+    // ]).then(() => console.log("Insert temp services"))
+    // Location.insertMany([
+    //     {name: "56 Phố Huế"},
+    //     {name: "125 Trần Duy Hưng"},
+    //     {name: "200 Phạm Văn Đồng"},
+    // ]).then((data) => {
+    //     console.log("Insert Location services")
+    //     Promise.all([
+    //         new User({
+    //             name: "Admin",
+    //             role: 0,
+    //             username: "admin",
+    //             password: "123456"
+    //         }).save(),
+    //         new User({
+    //             name: "Sale",
+    //             role: 2,
+    //             username: "sale",
+    //             password: "123456",
+    //             location: data[0]._id
+    //         }).save(),
+    //         new User({
+    //             name: "Sale 2",
+    //             role: 2,
+    //             username: "sale2",
+    //             password: "123456",
+    //             location: data[1]._id
+    //         }).save(),
+    //         new User({
+    //             name: "Location Admin",
+    //             role: 1,
+    //             username: "location_admin",
+    //             password: "123456",
+    //             location: data[0]._id
+    //         }).save(),
+    //         new User({
+    //             name: "Location Admin 2",
+    //             role: 1,
+    //             username: "location_admin2",
+    //             password: "123456",
+    //             location: data[1]._id
+    //         }).save()
+    //     ])
+    // })
 };
 
 const startServer = () => new Promise((resolve) => {

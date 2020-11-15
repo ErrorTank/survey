@@ -1,15 +1,62 @@
-import React from 'react';
-import {Router, Switch} from "react-router-dom";
-import { createBrowserHistory } from "history";
+import React, {Suspense} from 'react';
+import {Router, Switch, Redirect} from "react-router-dom";
+import {createBrowserHistory} from "history";
+import {GuessRoute} from "./routes/types/guess-route";
+
+require("./common/yup-config");
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import pink from '@material-ui/core/colors/pink';
+import {AuthenRoute} from "./routes/types/authen-route";
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: blue["700"],
+        },
+        secondary: pink,
+    },
+});
+
+const LoginRoute = React.lazy(() => import('./routes/guess-routes/login-route/login-route'));
+const SurveyRoute = React.lazy(() => import('./routes/authen-routes/survey-route/survey-route'));
+
 export const customHistory = createBrowserHistory();
 
 export const App = () => {
 
     return (
-        <Router  history={customHistory}>
-            <Switch>
+        <ThemeProvider theme={theme}>
+            <Router history={customHistory}>
+                <Suspense fallback={null}>
+                    <Switch>
+                        <AuthenRoute
+                            path={"/"}
+                            exact
+                            render={(props) =>
+                                null
+                            }
+                            roles={[0]}
+                        />
+                        <AuthenRoute
+                            path={"/survey"}
+                            exact
+                            render={(props) =>
+                                <SurveyRoute {...props}/>
+                            }
+                            roles={[2]}
+                        />
+                        <GuessRoute
+                            path={"/login"}
+                            exact
+                            render={(props) =>
+                                <LoginRoute {...props}/>
+                            }
 
-            </Switch>
-        </Router>
+                        />
+                    </Switch>
+                </Suspense>
+            </Router>
+        </ThemeProvider>
     )
 };

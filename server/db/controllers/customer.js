@@ -18,7 +18,7 @@ const submitSurvey = (data) => {
 const checkCustomer = data => {
     let {customerID} = data;
     return Customer.findOne({
-        customerID: customerID.trim().toLowerCase()
+        customerID: customerID.trim().toUpperCase()
     })
         .lean()
         .then(customer => {

@@ -1,0 +1,63 @@
+.s-step{
+  .s-step-content{
+    padding 0.5rem 0
+  }
+  .s-step-actions{
+    margin-top 0.4rem
+  }
+  &.survey-step{
+    position relative
+    min-height 100px
+    .survey-row{
+      margin-bottom 12px
+      .survey-label-light{
+        font-size 1rem
+        span{
+          font-weight 500;
+          text-decoration underline
+        }
+      }
+      .survey-label{
+        text-align center
+        font-size 1rem
+        font-weight 500
+        .rating-count{
+          font-weight 500
+          color #f8ce0b;
+          &.low{
+            color #d9534f
+          }
+          &.avg{
+            color #0ac282
+          }
+        }
+      }
+      .survey-content{
+        margin-top 8px
+      }
+    }
+    .load-location{
+      position absolute
+      top 20px
+
+    }
+
+  }
+  &.customer-info-step{
+    .info-row{
+      margin-bottom 8px
+      justify-content space-between
+      align-items flex-start
+      display flex
+      .info-label{
+        font-size 0.9rem
+
+      }
+      .info-value{
+        font-size 0.9rem
+        color primaryColor
+        font-weight 500
+      }
+    }
+  }
+}

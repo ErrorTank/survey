@@ -30,9 +30,18 @@ module.exports = () => {
         next();
     });
     app.use("/", (req, res, next) => {
+
         return express.static(process.cwd() + "/" + process.env.STATIC_DIR)(req, res, next)
     });
+    app.use("*", (req, res, next) => {
 
+        if (/^\/api\//.test(req.originalUrl)) {
+            next();
+        } else {
+
+            res.sendFile(process.cwd() + "/" + process.env.HTML_DIR);
+        }
+    });
     return app;
 };
 

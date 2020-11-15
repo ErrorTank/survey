@@ -14,7 +14,7 @@ export const GuessRoute = ({render, component: Component, ...rest}) => {
             ) : (
                 <Redirect
                     to={{
-                        pathname: roleMap[userInfo.getState().role],
+                        pathname: roleMap[userInfo.getState().role].defaultPath,
                     }}
                 />
             )}

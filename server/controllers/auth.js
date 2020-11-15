@@ -12,7 +12,7 @@ module.exports = () => {
         }).catch(err => next(err));
 
     });
-    router.get("/auth", authorizationUserMiddleware , (req, res, next) => {
+    router.get("/check-auth", authorizationUserMiddleware , (req, res, next) => {
 
         return getUserById(req.user._id).then((data) => {
             return res.status(200).json(pick(data, ["_id", "name", "location", "role"]));

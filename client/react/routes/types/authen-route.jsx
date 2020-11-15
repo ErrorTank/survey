@@ -9,18 +9,25 @@ export const AuthenRoute = ({render, component: Component, roles, ...rest}) => {
     return (
         <Route
             {...rest}
-            render={props => authenCache.getAuthen() ? roles.includes(userInfo.getState().role) ? render ? render(props) : (
-                <Component {...props} />
-            ) : <Redirect
-                to={{
-                    pathname: roleMap[userInfo.getState().role],
-                }}
-            /> : (
-                <Redirect
-                    to={{
-                        pathname: "/login",
-                    }}
-                />
+            render={props => (
+
+                    authenCache.getAuthen() ? roles.includes(userInfo.getState().role) ? render ? render(props) : (
+
+                            <Component {...props} />
+
+
+                    ) : <Redirect
+                        to={{
+                            pathname: roleMap[userInfo.getState().role].defaultPath,
+                        }}
+                    /> : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                            }}
+                        />
+                    )
+
             )}
         />
     );

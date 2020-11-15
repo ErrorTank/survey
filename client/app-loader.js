@@ -5,8 +5,6 @@ import {authenCache} from "./lib/cache/common/authentication";
 
 export const appLoader = {
     init() {
-
-
         authenApi.addHeader("Authorization", () => {
             let token = authenCache.getAuthen();
             return token ? `Bearer ${token}` : null;

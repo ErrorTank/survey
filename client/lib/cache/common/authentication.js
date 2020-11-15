@@ -1,6 +1,7 @@
 import {Cache} from "../cache"
 import Cookies from "js-cookie";
 import {authApi} from "../../../api/common/auth";
+import {userInfo} from "../../states/common";
 
 const cookiesEngine = {
     getItem: Cookies.get,
@@ -41,7 +42,10 @@ export const authenCache = (() => {
                         if (!user) {
                             reject();
                         } else {
-                            return resolve();
+                            userInfo.setState(user).then(() => {
+                                return resolve();
+                            });
+
                         }
                     }).catch(err => {
                         setAuthen(null)

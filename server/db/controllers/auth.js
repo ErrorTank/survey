@@ -8,7 +8,7 @@ const pick = require("lodash/pick");
 const {
     getPrivateKey,
 } = require('../../lib/authentication/keys/keys');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 
 
 const login = ({username, password}) => {

@@ -150,7 +150,7 @@ export const SurveyStep = ({customer, handleBack, handleNext}) => {
                             Quay lại
                         </Button>
                         <Button disabled={!location || !service || saving} style={{marginLeft: "10px"}} onClick={submit} variant="contained" color="primary">
-                            Đánh giá <i className="fab fa-telegram-plane"></i>{saving &&
+                            Đánh giá{" "} <i className="fab fa-telegram-plane"></i>{saving &&
                         <CircularProgress size={20} style={{marginLeft: "10px"}} color="primary"/>}
                         </Button>
                     </div>

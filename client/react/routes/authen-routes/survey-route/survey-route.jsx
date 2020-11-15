@@ -44,7 +44,6 @@ const SurveyRoute = () => {
     useDocumentTitle("Khảo sát khách hàng");
     const [activeStep, setActiveStep] = React.useState(0);
     const [customer, setCustomer] = React.useState({});
-    const [isExisted, setIsExisted] = React.useState(false);
     const steps = getSteps();
 
     const handleNext = () => {
@@ -57,7 +56,6 @@ const SurveyRoute = () => {
 
     const handleReset = () => {
         setCustomer({});
-        setIsExisted(false);
         setActiveStep(0);
     };
     return (
@@ -77,13 +75,15 @@ const SurveyRoute = () => {
                                     <StepLabel>{label}</StepLabel>
                                     <StepContent>
                                         {getStepContent(index, {
-                                            isExisted,
                                             customer,
                                             handleNext,
+                                            handleAdd: () => {
+                                                setCustomer({});
+                                                setActiveStep(1);
+                                            },
                                             handleBack,
                                             handleReset,
                                             setCustomer: customer => setCustomer(customer),
-                                            setIsExisted: existed => setIsExisted(existed)
                                         })}
 
                                     </StepContent>

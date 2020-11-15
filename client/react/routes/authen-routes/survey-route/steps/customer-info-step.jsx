@@ -13,7 +13,7 @@ const customerSchema = yup.object().shape({
     phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ")
 });
 
-export const CustomerInfoStep = ({customer, setIsExisted, setCustomer, handleNext, isExisted, handleBack}) => {
+export const CustomerInfoStep = ({customer, setCustomer, handleNext, handleBack}) => {
     const {register, handleSubmit, errors,} = useForm({
         resolver: yupResolver(customerSchema),
         mode: "onChange"
@@ -26,15 +26,13 @@ export const CustomerInfoStep = ({customer, setIsExisted, setCustomer, handleNex
         customerApi.createNewCustomer({
             ...data
         }).then(data => {
-            setIsExisted(true);
             setCustomer(data);
             handleNext(true);
         })
     };
-    console.log(isExisted)
     return (
         <div className="customer-info-step s-step">
-            {isExisted ? (
+            {customer.customerID ? (
                 <>
                     <div className="s-step-content">
                         <div className="info-row">

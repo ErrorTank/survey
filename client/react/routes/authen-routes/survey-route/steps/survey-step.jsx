@@ -49,7 +49,8 @@ export const SurveyStep = ({customer, handleBack, handleNext}) => {
             location: location._id,
             service: service._id,
             rating,
-            text: text.trim()
+            text: text.trim(),
+            customer: customer._id
         }
         customerApi.submitSurvey(data)
             .then(() => handleNext())

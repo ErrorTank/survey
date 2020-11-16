@@ -36,18 +36,7 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
     }).lean())
         .then(user => {
             let pipelines = [];
-            if(keyword){
-                pipelines.push({
-                    $match: {
-                        $or: [
-                            {
-                                phone: { $regex: keyword, $options: 'i' },
-                                name: { $regex: keyword, $options: 'i' }
-                            }
-                        ]
-                    },
-                });
-            }
+
             if(Number(role) === 1){
                 pipelines.push({
                     $match: {
@@ -71,6 +60,13 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
                         as: 'service',
                     },
                 },{
+                    $lookup: {
+                        from: 'customers',
+                        localField: 'customer',
+                        foreignField: '_id',
+                        as: 'customer',
+                    },
+                },{
                     $addFields: {
                         'location': {
                             $arrayElemAt: ['$location', 0],
@@ -78,18 +74,38 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
                         'service': {
                             $arrayElemAt: ['$service', 0],
                         },
+                        'customer': {
+                            $arrayElemAt: ['$customer', 0],
+                        },
                     },
-                },{
-                    $sort: {
-                        [sortBy]: order === "desc" ? -1 : 1
-                    }
-                }, {
-                    $skip: Number(skip)
-                }, {
-                    $limit: Number(limit)
-                }
+                },
             ]);
-            return Survey.aggregate(pipelines)
+            if(keyword){
+                pipelines.push({
+                    $match: {
+                        $or: [
+                            {
+                                phone: { $regex: keyword, $options: 'i' },
+
+                            }, {
+                                "customer.name": { $regex: keyword, $options: 'i' },
+
+                            }, {
+                                "customer.customerID": { $regex: keyword, $options: 'i' },
+                            }
+                        ]
+                    },
+                });
+            }
+            pipelines.push({
+                $sort: {
+                    [sortBy]: order === "desc" ? -1 : 1
+                }
+            },)
+            return Survey.aggregate(pipelines).then(list => ({
+                list: list.slice(Number(skip), Number(skip) + Number(limit)),
+                total: list.length
+            }))
         })
 
 }

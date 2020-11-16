@@ -7,5 +7,43 @@
   }
   .route-body{
     padding 1rem
+    .rating-count{
+      font-weight 500
+      color #f8ce0b;
+      &.low{
+        color #d9534f
+      }
+      &.avg{
+        color #0ac282
+      }
+    }
+  }
+}
+.survey-modal{
+  .survey-info-row{
+    margin-bottom 10px
+
+    display flex
+    align-items center
+    .sir-label{
+      font-size 1rem
+      color commonText
+      flex 0 0 40%
+
+    }
+    .sir-value{
+      font-size 1rem
+      flex 0 0 60%
+      color commonText
+
+      &.highlight{
+        color primaryColor
+        font-weight 500
+      }
+      &.opinion{
+        white-space pre-wrap
+      }
+
+    }
   }
 }

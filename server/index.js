@@ -11,10 +11,11 @@ const errorHandlingMiddleware = require("./lib/error/error-handlers");
 const dbManager = require("./db/index");
 const loadDbInstances = (appDb) => {
     let Survey = require("./db/model/survey")(appDb);
-    require("./db/model/customer")(appDb);
+    let Customer = require("./db/model/customer")(appDb);
     let Service = require("./db/model/service")(appDb);
     let Location = require("./db/model/location")(appDb);
     let User = require("./db/model/user")(appDb);
+    // Customer.deleteMany({}).then(() => console.log("Delete all customers"))
     // Survey.deleteMany({}).then(() => console.log("Delete all surveys"))
     // Service.deleteMany({}).then(() => console.log("Delete all services"))
     // Location.deleteMany({}).then(() => console.log("Delete all locations"))

@@ -9,7 +9,7 @@ const surveySchema = new Schema({
     },
     rating: {
         type: Number,
-        enum: [0, 1, 2, 3, 4]
+        enum: [1, 2, 3, 4, 5]
     },
     text: String,
     createdAt: {

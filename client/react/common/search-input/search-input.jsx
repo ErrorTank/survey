@@ -30,7 +30,7 @@ export const SearchInput = ({placeholder, initValue = '', onChange}) => {
         setValue(initValue);
     }, [initValue])
     return (
-        <Paper component="form" className={classes.root}>
+        <Paper className={classes.root}>
             <InputBase
                 className={classes.input}
                 placeholder={placeholder}
@@ -38,13 +38,13 @@ export const SearchInput = ({placeholder, initValue = '', onChange}) => {
                 onChange={e => setValue(e.target.value)}
                 value={value}
                 onKeyDown={e => {
-                    if(e.keyCode === 13 && value){
+                    if(e.keyCode === 13){
                         onChange(value);
                     }
                 }}
 
             />
-            <IconButton type="submit"  className={classes.iconButton} onClick={() => onChange(value)} aria-label="search">
+            <IconButton   className={classes.iconButton} onClick={() => onChange(value)} aria-label="search">
                 <SearchIcon />
             </IconButton>
         </Paper>

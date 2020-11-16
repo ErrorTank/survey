@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {StarRating} from "../../../../common/star-rating/star-rating";
 import Button from "@material-ui/core/Button";
 import {customerApi} from "../../../../../api/common/customer";
+import {EmojiRating} from "../../../../common/emoji-rating/emoji-rating";
 
 export const SurveyStep = ({customer, handleBack, handleNext}) => {
     let [locations, setLocations] = React.useState([]);
@@ -126,6 +127,7 @@ export const SurveyStep = ({customer, handleBack, handleNext}) => {
                                     onMouseOverStars={rating => setFakeRating(rating)}
                                     onMouseLeaveStars={() => setFakeRating(rating)}
                                 />
+                                {/*<EmojiRating/>*/}
                             </div>
                         </div>
                         <div className="survey-row">

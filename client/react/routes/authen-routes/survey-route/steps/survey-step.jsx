@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {StarRating} from "../../../../common/star-rating/star-rating";
 import Button from "@material-ui/core/Button";
 import {customerApi} from "../../../../../api/common/customer";
-import {EmojiRating} from "../../../../common/emoji-rating/emoji-rating";
+import Rating from '@material-ui/lab/Rating';
 
 export const SurveyStep = ({customer, handleBack, handleNext}) => {
     let [locations, setLocations] = React.useState([]);
@@ -115,18 +115,19 @@ export const SurveyStep = ({customer, handleBack, handleNext}) => {
                         <div className="survey-row">
 
                             <div className="survey-label">Mức độ hài lòng <span className={classnames("rating-count", {
-                                low: fakeRating <= 2,
-                                avg: fakeRating > 2 && fakeRating <= 4,
-                                high: fakeRating > 4
-                            })}>{fakeRating}/5</span></div>
+                                low: rating <= 2,
+                                avg: rating > 2 && rating <= 4,
+                                high: rating > 4
+                            })}>{rating}/5</span></div>
                             <div className="survey-content" style={{textAlign: "center"}}>
-                                <StarRating
-                                    rating={rating}
-                                    editable={true}
-                                    onChange={rating => setRating(rating)}
-                                    onMouseOverStars={rating => setFakeRating(rating)}
-                                    onMouseLeaveStars={() => setFakeRating(rating)}
-                                />
+                                <Rating name="size-large" value={rating} size="large" onChange={(e, rating) => setRating(rating)} />
+                                {/*<StarRating*/}
+                                {/*    rating={rating}*/}
+                                {/*    editable={true}*/}
+                                {/*    onChange={rating => setRating(rating)}*/}
+                                {/*    onMouseOverStars={rating => setFakeRating(rating)}*/}
+                                {/*    onMouseLeaveStars={() => setFakeRating(rating)}*/}
+                                {/*/>*/}
                                 {/*<EmojiRating/>*/}
                             </div>
                         </div>

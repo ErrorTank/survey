@@ -61,15 +61,15 @@ const SurveyRoute = () => {
     return (
         <AuthenLayout>
             <div className="survey-route">
-                <Paper elevation={3} className="survey-container">
+                <Paper elevation={0} className="survey-container">
                     <div className="survey-header">
                         <div className="sh-title">
-                            Khảo sát nhanh
+                            Khảo sát khách hàng
                         </div>
 
                     </div>
                     <div className="survey-body">
-                        <Stepper style={{padding: 0}} activeStep={activeStep} orientation="vertical">
+                        <Stepper style={{padding: 0, backgroundColor: "transparent"}} activeStep={activeStep} orientation="vertical">
                             {steps.map((label, index) => (
                                 <Step key={label}>
                                     <StepLabel>{label}</StepLabel>

@@ -20,7 +20,7 @@ const login = ({username, password}) => {
             if(!user){
                 return Promise.reject(new ApplicationError('wrong_credential'));
             }
-            return createAuthToken(pick(user, ['_id', 'name']), getPrivateKey(), {
+            return createAuthToken(pick(user, ['_id', 'name', 'role']), getPrivateKey(), {
                 algorithm: 'RS256',
             }).then((token) => {
                 return {

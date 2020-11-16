@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorizationUserMiddleware} = require("../middlewares/auth");
-const { submitSurvey, checkCustomer, createCustomer} = require("../db/controllers/customer");
+const { submitSurvey, checkCustomer, createCustomer, getSurveys} = require("../db/controllers/customer");
 
 module.exports = () => {
 
@@ -22,6 +22,13 @@ module.exports = () => {
     router.post("/submit-survey", authorizationUserMiddleware, (req, res, next) => {
 
         return submitSurvey(req.body).then((data) => {
+            return res.status(200).json(data);
+        }).catch(err => next(err));
+
+    });
+    router.get("/surveys", authorizationUserMiddleware, (req, res, next) => {
+
+        return getSurveys(req.user, req.query).then((data) => {
             return res.status(200).json(data);
         }).catch(err => next(err));
 

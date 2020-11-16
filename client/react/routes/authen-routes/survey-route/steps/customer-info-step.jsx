@@ -9,7 +9,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 
 
 const customerSchema = yup.object().shape({
-    name: yup.string().noSpecialChar("Không được chứa kí tự đặc biệt").min(5, "Phải lớn hơn 4 kí tự").required("Không được để trống"),
+    name: yup.string().min(5, "Phải lớn hơn 4 kí tự").required("Không được để trống"),
     phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ")
 });
 

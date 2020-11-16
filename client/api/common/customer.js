@@ -1,5 +1,6 @@
 
 import {authenApi, guessApi} from "../api";
+import {urlUtils} from "../../lib/utils/url-utils";
 
 
 export const customerApi = {
@@ -12,5 +13,8 @@ export const customerApi = {
     submitSurvey(data){
         return authenApi.post("/customer/submit-survey", data)
     },
-
+    getCustomerSurveys(filter){
+        let queryString = urlUtils.buildParams(filter);
+        return authenApi.get(`/customer/surveys${queryString}`);
+    }
 };

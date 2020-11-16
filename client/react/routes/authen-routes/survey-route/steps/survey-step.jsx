@@ -9,7 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import {StarRating} from "../../../../components/star-rating/star-rating";
+import {StarRating} from "../../../../common/star-rating/star-rating";
 import Button from "@material-ui/core/Button";
 import {customerApi} from "../../../../../api/common/customer";
 
@@ -134,7 +134,7 @@ export const SurveyStep = ({customer, handleBack, handleNext}) => {
                             </div>
                             <div className="survey-content">
                                 <TextField
-                                    label="Ý kiến của bạn"
+                                    label="Ý kiến của anh/chị"
                                     multiline
                                     rows={4}
                                     fullWidth

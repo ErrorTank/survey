@@ -20,6 +20,7 @@ const theme = createMuiTheme({
 
 const LoginRoute = React.lazy(() => import('./routes/guess-routes/login-route/login-route'));
 const SurveyRoute = React.lazy(() => import('./routes/authen-routes/survey-route/survey-route'));
+const SurveysRoute = React.lazy(() => import('./routes/authen-routes/surveys-route/surveys-route'));
 
 export const customHistory = createBrowserHistory();
 
@@ -45,6 +46,14 @@ export const App = () => {
                                 <SurveyRoute {...props}/>
                             }
                             roles={[2]}
+                        />
+                        <AuthenRoute
+                            path={"/surveys"}
+                            exact
+                            render={(props) =>
+                                <SurveysRoute {...props}/>
+                            }
+                            roles={[0,1]}
                         />
                         <GuessRoute
                             path={"/login"}

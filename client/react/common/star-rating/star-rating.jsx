@@ -37,6 +37,7 @@ export class StarRating extends React.Component {
                                   onMouseOverStars(each);
                               }
                           }}
+                          onTouchStart={() => editable && onChange(each)}
                           onClick={() => editable && onChange(each)}
                     />
                 ))}

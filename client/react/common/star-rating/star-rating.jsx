@@ -21,22 +21,22 @@ export class StarRating extends React.Component {
 
         return (
             <div className={classnames("stars-outer", className, {editable})}
-                 onMouseLeave={() => {
-                     if(editable){
-                         this.setState({rating: this.props.rating || 0});
-                         onMouseLeaveStars();
-                     }
-                 }}
+                 // onMouseLeave={() => {
+                 //     if(editable){
+                 //         this.setState({rating: this.props.rating || 0});
+                 //         onMouseLeaveStars();
+                 //     }
+                 // }}
             >
                 {[1, 2, 3, 4, 5].map(each => (
                     <span className="star"
                           key={each}
-                          onMouseEnter={() => {
-                              if(editable){
-                                  this.setState({rating: each})
-                                  onMouseOverStars(each);
-                              }
-                          }}
+                          // onMouseEnter={() => {
+                          //     if(editable){
+                          //         this.setState({rating: each})
+                          //         onMouseOverStars(each);
+                          //     }
+                          // }}
                           onTouchStart={() => editable && onChange(each)}
                           onClick={() => editable && onChange(each)}
                     />

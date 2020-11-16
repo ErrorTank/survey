@@ -77,7 +77,7 @@ export const PaginationDataTable = ({api, size, filter, columns, getRowKey = eac
     }, [size])
     useEffect(() => {
         fetch({...filter, order, sortBy, skip: 0, limit: rowsPerPage});
-    }, [api, rowsPerPage, filter.keyword, order, sortBy])
+    }, [api, rowsPerPage, filter, order, sortBy])
 
 
     const handleRequestSort = (event, property) => {

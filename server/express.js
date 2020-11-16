@@ -41,6 +41,7 @@ module.exports = () => {
     });
     app.use("/api", cors({
         origin: function (origin, callback) {
+            console.log(origin)
             if ([process.env.HOST].indexOf(origin) !== -1 || !origin) {
                 callback(null, true)
             } else {

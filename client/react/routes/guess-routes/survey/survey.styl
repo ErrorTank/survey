@@ -1,0 +1,74 @@
+.survey{
+  position absolute
+  top 50%
+  transform translate(-50%, -50%)
+  left 50%
+  .survey-header{
+    font-family: 'El Messiri', sans-serif;
+    color white
+    font-size 3rem
+    font-weight bold
+    letter-spacing 1px
+    white-space nowrap
+    text-align center
+  }
+  .survey-body{
+    margin-top 30px
+    .actions{
+      margin-top 50px
+
+    }
+  }
+  .survey-btn{
+    width 100%
+    background-color spaColor
+    border-radius 25px
+    padding 16px
+    color white
+    font-weight bold
+    font-size 2rem
+    outline none
+    border none
+    transition opacity 0.2s ease
+    &:disabled{
+      opacity 0.5
+    }
+  }
+
+  .step-one{
+    .customer-id-input{
+      width 100%
+      border none
+
+      font-size 2.5rem
+      font-weight bold
+      text-align center
+      background-color transparent
+      outline none
+      padding 8px 10px
+      caret-color: white
+      &:focus{
+        border-bottom 1px solid white
+      }
+      &.empty{
+        border-bottom 1px solid white
+      }
+      color primaryColor
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: white;
+        opacity: 1; /* Firefox */
+      }
+
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: white;
+        opacity: 1; /* Firefox */
+      }
+
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: white;
+        opacity: 1; /* Firefox */
+      }
+
+    }
+  }
+}

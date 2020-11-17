@@ -8,23 +8,30 @@ import {SearchInput} from "../../../common/search-input/search-input";
 import {PaginationDataTable} from "../../../common/pagination-data-table/pagination-data-table";
 import {customerApi} from "../../../../api/common/customer";
 import classnames from "classnames";
+import StarIcon from '@material-ui/icons/Star';
 import moment from "moment";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import { useTheme } from '@material-ui/core/styles';
+import {useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Rating from "@material-ui/lab/Rating";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import {locationApi} from "../../../../api/common/location";
+import {serviceApi} from "../../../../api/common/service";
 
 const columns = [
     {
         key: "customer",
         label: "Mã khách hàng",
         render: row => row.customer.customerID
-    },{
+    }, {
         key: "rating",
         label: "Đánh giá",
         render: row => <span className={classnames("rating-count", {
@@ -33,19 +40,19 @@ const columns = [
             high: row.rating > 4
         })}>{row.rating}/5</span>,
         sortable: true
-    },{
+    }, {
         key: "service",
         label: "Dịch vụ",
         render: row => row.service.name
-    },{
+    }, {
         key: "location",
         label: "Cơ sở",
         render: row => row.location.name
-    },{
+    }, {
         key: "text",
         label: "Ý kiến",
         render: row => <div className="ellipse-text">{row.text}</div>
-    },{
+    }, {
         key: "createdAt",
         label: "Ngày đánh giá",
         render: row => moment(row.createdAt).format("H:mm DD/MM/YYYY"),
@@ -56,19 +63,41 @@ const columns = [
 const SurveysRoute = () => {
     useDocumentTitle("Danh sách khảo sát");
     const [detail, setDetail] = React.useState(null);
+    let [loading, setLoading] = React.useState(false);
     let [keyword, setKeyword] = React.useState("");
+    let [rating, setRating] = React.useState(0);
+    let [location, setLocation] = React.useState({_id: 1, name: "Tất cả"});
+    let [service, setService] = React.useState({_id: 1, name: "Tất cả"});
+    let [locations, setLocations] = React.useState([]);
+    let [services, setServices] = React.useState([]);
+    React.useEffect(() => {
+        Promise.all([locationApi.getLocations(), serviceApi.getServices()])
+            .then(([locations, services]) => {
+                setLocations([{_id: 1, name: "Tất cả"}].concat(locations));
+                setServices([{_id: 1, name: "Tất cả"}].concat(services));
+                setLoading(false);
+            })
+    }, [])
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const api = React.useCallback((config) => {
-        return customerApi.getCustomerSurveys(config)
+    const api = React.useCallback(({ service, location, ...rest}) => {
+        return customerApi.getCustomerSurveys({service: service._id, location: location._id, ...rest})
     }, [])
-    let filter = React.useMemo(() => ({keyword}), [keyword]);
+    let filter = React.useMemo(() => ({keyword, rating, service, location}), [keyword, rating, service, location]);
     let handleClickRow = React.useCallback((row) => {
         setDetail(row)
     }, []);
 
+    console.log(location)
+    const handleChangeLocation = (event) => {
 
+        setLocation(locations.find(each => each._id === event.target.value));
+    };
 
+    const handleChangeService = (event) => {
+
+        setService(services.find(each => each._id === event.target.value));
+    };
 
     const handleClose = () => {
         setDetail(null);
@@ -118,7 +147,7 @@ const SurveysRoute = () => {
                                 Đánh giá
                             </div>
                             <div className="sir-value highlight">
-                                <Rating name="size-large" value={Number(detail?.rating)} size="medium" readOnly />
+                                <Rating name="size-large" value={Number(detail?.rating)} size="medium" readOnly/>
                             </div>
                         </div>
                         <div className="survey-info-row">
@@ -165,26 +194,108 @@ const SurveysRoute = () => {
                 </Dialog>
                 <Paper elevation={3}>
                     <div className="route-name">
-                        <Typography  variant="h6" id="tableTitle" component="div">
+                        <Typography variant="h6" id="tableTitle" component="div">
                             Danh sách khảo sát
                         </Typography>
                     </div>
                     <div className="route-body">
                         <div className="common-table-container">
                             <div className="ctc-toolbar">
-                                <Grid container spacing={3} >
-                                    <Grid item xs={12} md={4} lg={3}>
+                                <Grid container  alignItems={"center"}>
+                                    <Grid item xs={12} md={4} lg={3} className={"search"}>
                                         <SearchInput
                                             placeholder={"Tìm kiếm theo Sđt hoặc Mã khách hàng..."}
                                             onChange={keyword => setKeyword(keyword)}
                                         />
                                     </Grid>
-                                    {/*<Grid item xs={12} md={4} lg={3}>*/}
-                                    {/*    <SearchInput*/}
-                                    {/*        placeholder={"Tìm kiếm theo Sđt hoặc Mã khách hàng..."}*/}
-                                    {/*        onChange={keyword => setKeyword(keyword)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
+                                    {!loading && (
+                                        <Grid xs={12} md={8} spacing={2} lg={9} alignItems={"center"}
+                                              justify={"flex-end"} container>
+                                            <Grid item xs={6} sm={3} lg={2}>
+                                                <FormControl variant="outlined" fullWidth size={'small'}>
+                                                    <InputLabel id="demo-simple-select-outlined-label">
+                                                        Đánh giá
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        value={rating}
+                                                        renderValue={value => {
+
+                                                            return ((value === 0 ) ? "Tất cả" : <div>{value} <StarIcon fontSize={"small"}/></div>)
+                                                        }}
+                                                        onChange={e => setRating(e.target.value)}
+                                                        label="Đánh giá"
+                                                    >
+                                                        {[0, 1,2,3,4,5].map(each => (
+                                                            <MenuItem key={each}
+                                                                      value={each}>{each === 0 ? "Tất cả" : <span>{each} <StarIcon fontSize={"small"}/></span>}</MenuItem>
+                                                        ))}
+
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={12} sm={4} lg={3}>
+                                                <FormControl variant="outlined" fullWidth size={'small'}>
+                                                    <InputLabel id="demo-simple-select-outlined-label">
+                                                        Cơ sở
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        value={location._id}
+                                                        onChange={handleChangeLocation}
+                                                        label="Cơ sở"
+                                                    >
+                                                        {locations.map(each => (
+                                                            <MenuItem key={each._id}
+                                                                      value={each._id}>{each.name}</MenuItem>
+                                                        ))}
+
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={12} sm={4}  lg={3}>
+                                                <FormControl variant="outlined" fullWidth size={'small'}>
+                                                    <InputLabel id="demo-simple-select-outlined-label">
+                                                        Dịch vụ
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        value={service._id}
+                                                        onChange={handleChangeService}
+                                                        label="Cơ sở"
+                                                    >
+                                                        {services.map(each => (
+                                                            <MenuItem key={each._id}
+                                                                      value={each._id}>{each.name}</MenuItem>
+                                                        ))}
+
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
+                                            {/*    <Select*/}
+
+                                            {/*        labelId="demo-simple-select-outlined-label"*/}
+                                            {/*        id="demo-simple-select-outlined"*/}
+                                            {/*        value={location._id}*/}
+                                            {/*        onChange={e => }*/}
+                                            {/*        label="Cơ sở"*/}
+                                            {/*    >*/}
+                                            {/*        {locations.map(each => (*/}
+                                            {/*            <MenuItem key={each._id} value={each._id}>{each.name}</MenuItem>*/}
+                                            {/*        ))}*/}
+
+                                            {/*    </Select>*/}
+                                            {/*</Grid>*/}
+                                        </Grid>
+                                    )}
+
                                 </Grid>
                             </div>
                             <div className="ctc-table">

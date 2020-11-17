@@ -13,7 +13,6 @@ const customerSchema = new Schema({
     phone: {
         type: String,
         required: true,
-        unique: true
     },
     createdAt: {
         type: Date,

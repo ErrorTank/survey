@@ -30,7 +30,7 @@ const createCustomer = data => {
     return new Customer({name: name.trim(), phone: phone.trim(), customerID}).save()
 }
 
-const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc", skip = 0, limit = 10}) => {
+const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc", skip = 0, limit = 10, location, service, rating}) => {
     return (Number(role) === 0 ? Promise.resolve() : User.findOne({
         _id: Object(_id)
     }).lean())
@@ -80,6 +80,7 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
                     },
                 },
             ]);
+
             if(keyword){
                 pipelines.push({
                     $match: {
@@ -94,6 +95,28 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
                                 "customer.customerID": { $regex: keyword, $options: 'i' },
                             }
                         ]
+                    },
+                });
+            }
+
+            if(Number(rating) > 0){
+                pipelines.push({
+                    $match: {
+                        rating: Number(rating)
+                    },
+                });
+            }
+            if(location !== '1'){
+                pipelines.push({
+                    $match: {
+                        "location._id": ObjectId(location)
+                    },
+                });
+            }
+            if(service !== '1'){
+                pipelines.push({
+                    $match: {
+                        "service._id": ObjectId(service)
                     },
                 });
             }

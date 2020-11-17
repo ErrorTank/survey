@@ -8,6 +8,8 @@ import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
 import {AuthenRoute} from "./routes/types/authen-route";
+import {roleMap} from "./routes/role-map";
+import {userInfo} from "../lib/states/common";
 
 const theme = createMuiTheme({
     palette: {
@@ -35,7 +37,11 @@ export const App = () => {
                             path={"/"}
                             exact
                             render={(props) =>
-                                null
+                                <Redirect
+                                    to={{
+                                        pathname: roleMap[userInfo.getState().role].defaultPath,
+                                    }}
+                                />
                             }
                             roles={[0]}
                         />

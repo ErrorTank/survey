@@ -87,7 +87,7 @@ export const PaginationDataTable = ({api, size, filter, columns, getRowKey = eac
     };
 
 
-    console.log(rowsPerPage)
+
     const handleClick = (row) => {
         onClickRow(row);
     };

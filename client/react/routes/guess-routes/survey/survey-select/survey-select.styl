@@ -1,0 +1,74 @@
+.survey-select {
+  margin-bottom 20px
+  box-shadow: 0px 1px 3px #696969
+  border-radius 25px
+  padding-left 11rem
+  height 3rem
+  background-color white
+  position relative
+  .sl-items{
+
+    box-shadow: 0px 1px 3px #696969
+    border-radius 5px
+    background-color white
+    left 0
+    z-index 1
+    position absolute
+    top 102%
+    width 100%
+    max-height 150px
+    overflow-y auto
+    .sl-item{
+      text-align left
+      padding 8px 12px
+      font-size 1.3rem
+      &.active{
+        background-color darken(white, 5%)
+      }
+    }
+  }
+  .sl-label {
+    position absolute
+    left 0
+    top 0
+    border-radius 25px
+    line-height: 3rem;
+    padding 0 12px
+    text-align center
+    width 10rem
+    font-size 1.3rem
+    color white
+    font-weight 500
+    height 100%
+    background-color spaColor
+  }
+
+  .sl-container {
+    height 3rem
+    position relative
+
+    .sl-display{
+
+      position relative
+      height 3rem
+      line-height 3rem
+      text-align left
+      padding-right 30px
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+      i{
+        position absolute
+        top 50%
+        transform translateY(-50%)
+        right 12px
+        color commonText
+      }
+      font-size 1.3rem
+      &.no-value{
+        color #a9a9a9
+      }
+    }
+
+  }
+}

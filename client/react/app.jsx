@@ -22,7 +22,6 @@ const theme = createMuiTheme({
 });
 
 const LoginRoute = React.lazy(() => import('./routes/guess-routes/login-route/login-route'));
-const SurveyRoute = React.lazy(() => import('./routes/authen-routes/survey-route/survey-route'));
 const SurveysRoute = React.lazy(() => import('./routes/authen-routes/surveys-route/surveys-route'));
 const Survey = React.lazy(() => import('./routes/guess-routes/survey/survey'));
 

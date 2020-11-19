@@ -52,10 +52,10 @@ const Survey = () => {
                             </div>
                             <div className="thank-box">
                                 <div className="inner-box">
-                                    <p style={{textIndent: "20px"}}>
-                                        Cảm ơn anh/chị: <span className="highlight">{customer.name}</span> đã tham gia đánh giá và sử dụng dịch vụ của chúng tôi!
+                                    <p style={{textAlign: "center"}}>
+                                        Cảm ơn quý khách hàng <span className="highlight">{customer.name}</span> đã giúp chúng tôi hoàn thiện hơn chất lượng dịch vụ.
                                     </p>
-                                    <p style={{marginTop: "15px", textAlign: "center"}}>Chúc anh/chị một ngày tốt lành.</p>
+                                    <p style={{marginTop: "15px", textAlign: "center"}}>Chúc quý khách một ngày tốt lành.</p>
                                 </div>
                             </div>
                             <div style={{textAlign: "center", marginTop: "50px"}}>

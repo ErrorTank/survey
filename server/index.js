@@ -79,23 +79,24 @@ const startServer = () => new Promise((resolve) => {
 
     const port = process.env.PORT || 4000;
     let environment = process.env.NODE_ENV;
-    const server = https.createServer(
-        {
-            key: fs.readFileSync(
-                path.join(
-                    __dirname,
-                    `./ssl/${environment}/${process.env.SSL_KEY_PATH}`
-                )
-            ),
-            cert: fs.readFileSync(
-                path.join(
-                    __dirname,
-                    `./ssl/${environment}/${process.env.SSL_CRT_PATH}`
-                )
-            ),
-        },
-        app
-    );
+    // const server = https.createServer(
+    //     {
+    //         key: fs.readFileSync(
+    //             path.join(
+    //                 __dirname,
+    //                 `./ssl/${environment}/${process.env.SSL_KEY_PATH}`
+    //             )
+    //         ),
+    //         cert: fs.readFileSync(
+    //             path.join(
+    //                 __dirname,
+    //                 `./ssl/${environment}/${process.env.SSL_CRT_PATH}`
+    //             )
+    //         ),
+    //     },
+    //     app
+    // );
+    const server = http.createServer(app);
     app.use("/", createRoutes());
     app.use(errorHandlingMiddleware);
     server.listen(port, () => {

@@ -20,19 +20,19 @@ module.exports = () => {
             "Access-Control-Allow-Headers",
             "Origin, X-Requested-With, Content-Type, Accept, Authorization"
         );
-        if (req.method === "OPTIONS") {
-            res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET, OPTIONS");
-            return res.status(200).json({});
-        }
+        // if (req.method === "OPTIONS") {
+        //     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET, OPTIONS");
+        //     return res.status(200).json({});
+        // }
         next();
     });
-    app.options("/*", function(req, res, next){
-        console.log("cacacacac")
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-        res.send(200);
-    });
+    // app.options("/*", function(req, res, next){
+    //     console.log("cacacacac")
+    //     res.header('Access-Control-Allow-Origin', '*');
+    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    //     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    //     res.send(200);
+    // });
     app.use("/", (req, res, next) => {
 
         return express.static(process.cwd() + "/" + process.env.STATIC_DIR)(req, res, next)

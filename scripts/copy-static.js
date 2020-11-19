@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const listDirFiles = ["static"];
+const listDirFiles = ["static", "manifest.json", "sw.js"];
 const source = "../public";
 
 

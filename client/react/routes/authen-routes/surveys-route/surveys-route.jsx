@@ -25,7 +25,12 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {locationApi} from "../../../../api/common/location";
 import {serviceApi} from "../../../../api/common/service";
-
+const ratingMatch = {
+    1: "Chưa tốt",
+    2: "Tạm ổn",
+    3: "Hài lòng",
+    4: "Rất hài lòng"
+}
 const columns = [
     {
         key: "customer",
@@ -34,11 +39,7 @@ const columns = [
     }, {
         key: "rating",
         label: "Đánh giá",
-        render: row => <span className={classnames("rating-count", {
-            low: row.rating <= 2,
-            avg: row.rating > 2 && row.rating <= 4,
-            high: row.rating > 4
-        })}>{row.rating}/5</span>,
+        render: row => <span className={classnames("rating-count")}>{ratingMatch[row.rating]}</span>,
         sortable: true
     }, {
         key: "service",
@@ -147,7 +148,7 @@ const SurveysRoute = () => {
                                 Đánh giá
                             </div>
                             <div className="sir-value highlight">
-                                <Rating name="size-large" value={Number(detail?.rating)} size="medium" readOnly/>
+                                <span className={classnames("rating-count")}>{ratingMatch[detail?.rating]}</span>
                             </div>
                         </div>
                         <div className="survey-info-row">
@@ -201,6 +202,7 @@ const SurveysRoute = () => {
                     <div className="route-body">
                         <div className="common-table-container">
                             <div className="ctc-toolbar">
+
                                 <Grid container  alignItems={"center"}>
                                     <Grid item xs={12} md={4} lg={3} className={"search"}>
                                         <SearchInput
@@ -208,10 +210,15 @@ const SurveysRoute = () => {
                                             onChange={keyword => setKeyword(keyword)}
                                         />
                                     </Grid>
+
+
+
+                                </Grid>
+                                <div style={{marginTop: "12px"}}>
                                     {!loading && (
-                                        <Grid xs={12} md={8} spacing={2} lg={9} alignItems={"center"}
-                                              justify={"flex-end"} container>
-                                            <Grid item xs={6} sm={3} lg={2}>
+                                        <Grid spacing={2} alignItems={"center"}
+                                              justify={"flex-start"} container>
+                                            <Grid item xs={6} sm={4}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Đánh giá
@@ -222,21 +229,20 @@ const SurveysRoute = () => {
                                                         value={rating}
                                                         renderValue={value => {
 
-                                                            return ((value === 0 ) ? "Tất cả" : <div>{value} <StarIcon fontSize={"small"}/></div>)
+                                                            return ((value === 0 ) ? "Tất cả" : <span>{ratingMatch[each]}</span>)
                                                         }}
                                                         onChange={e => setRating(e.target.value)}
                                                         label="Đánh giá"
                                                     >
-                                                        {[0, 1,2,3,4,5].map(each => (
+                                                        {[0, 1,2,3,4].map(each => (
                                                             <MenuItem key={each}
-                                                                      value={each}>{each === 0 ? "Tất cả" : <span>{each} <StarIcon fontSize={"small"}/></span>}</MenuItem>
+                                                                      value={each}>{each === 0 ? "Tất cả" : <span>{ratingMatch[each]}</span>}</MenuItem>
                                                         ))}
-
 
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={12} sm={4} lg={3}>
+                                            <Grid item xs={6} sm={4}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Cơ sở
@@ -257,7 +263,7 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={12} sm={4}  lg={3}>
+                                            <Grid item xs={12} sm={4}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Dịch vụ
@@ -278,25 +284,31 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
-                                            {/*    <Select*/}
 
-                                            {/*        labelId="demo-simple-select-outlined-label"*/}
-                                            {/*        id="demo-simple-select-outlined"*/}
-                                            {/*        value={location._id}*/}
-                                            {/*        onChange={e => }*/}
-                                            {/*        label="Cơ sở"*/}
-                                            {/*    >*/}
-                                            {/*        {locations.map(each => (*/}
-                                            {/*            <MenuItem key={each._id} value={each._id}>{each.name}</MenuItem>*/}
-                                            {/*        ))}*/}
+                                            <Grid item xs={12}>
+                                                <FormControl variant="outlined" fullWidth size={'small'}>
+                                                    <InputLabel id="demo-simple-select-outlined-label">
+                                                        Dịch vụ
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        value={service._id}
+                                                        onChange={handleChangeService}
+                                                        label="Cơ sở"
+                                                    >
+                                                        {services.map(each => (
+                                                            <MenuItem key={each._id}
+                                                                      value={each._id}>{each.name}</MenuItem>
+                                                        ))}
 
-                                            {/*    </Select>*/}
-                                            {/*</Grid>*/}
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                         </Grid>
                                     )}
-
-                                </Grid>
+                                </div>
                             </div>
                             <div className="ctc-table">
                                 <PaginationDataTable

@@ -6,6 +6,10 @@ import {Container} from "@material-ui/core";
 import {Step3} from "./step-3/step-3";
 import {userInfo} from "../../../../lib/states/common";
 import {SurveyBtn} from "./survey-btn/survey-btn";
+import Button from "@material-ui/core/Button";
+import {authenCache} from "../../../../lib/cache/common/authentication";
+import {customHistory} from "../../../app";
+
 
 const modes = [
     {
@@ -24,8 +28,21 @@ const Survey = () => {
     let [service, setService] = React.useState(null);
     let [location, setLocation] = React.useState(userInfo.getState().location);
     let Component = modes[mode]?.Comp;
+    const signout = () => {
+        authenCache.setAuthen(null);
+        userInfo.setState(null).then(() => customHistory.push("/login"));
+    };
     return (
         <div className="survey">
+            <Button
+                className={"signout-btn"}
+                color={"secondary"}
+                onClick={signout}
+                variant={"contained"}
+            >
+                <span><i className="fas fa-sign-out-alt"></i> Đăng xuất</span>
+            </Button>
+
             <Container maxWidth={"lg"}>
                 <div className="survey-container">
                     {mode === 3 ? (

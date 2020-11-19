@@ -6,28 +6,28 @@ import classnames from "classnames";
 const ratings = [
     {
         value: 1,
-        icon: <i className="fas fa-angry"></i>,
+        icon: ({onClick}) => <i className="fas fa-angry" onClick={onClick}></i>,
         label: "Chưa tốt"
     }, {
         value: 2,
-        icon:  <i className="fas fa-meh"></i>,
+        icon: ({onClick}) =>  <i className="fas fa-meh" onClick={onClick}></i>,
         label: "Tạm ổn"
 
     },{
         value: 3,
-        icon: <i className="fas fa-smile-beam"></i>,
+        icon: ({onClick}) => <i className="fas fa-smile-beam" onClick={onClick}></i>,
         label: "Hài lòng"
 
     },{
         value: 4,
-        icon: <i className="fas fa-grin-hearts"></i>,
+        icon: ({onClick}) => <i className="fas fa-grin-hearts" onClick={onClick}></i>,
         label: "Rất hài lòng"
 
     },
 ]
 
 export const Step3 = ({customer, setCustomer, handleNext, locationProp, serviceProp}) => {
-    let [rating, setRating] = React.useState(2);
+    let [rating, setRating] = React.useState(null);
     let [text, setText] = React.useState('');
     let [saving, setSaving] = React.useState(false);
 
@@ -56,7 +56,7 @@ export const Step3 = ({customer, setCustomer, handleNext, locationProp, serviceP
                         return (
                             <div className={classnames("rating", {active: rating === each.value})} key={each.value}>
                                 <div className="rating-icon">
-                                    {each.icon}
+                                    {each.icon({onClick: () => setRating(each.value), current: rating})}
                                 </div>
                                 <div className="rating-label">
                                     {each.label}

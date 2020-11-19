@@ -41,9 +41,8 @@ const Survey = () => {
                                     <p style={{marginTop: "15px", textAlign: "center"}}>Chúc anh/chị một ngày tốt lành.</p>
                                 </div>
                             </div>
-                            <div style={{textAlign: "center", marginTop: "30px"}}>
+                            <div style={{textAlign: "center", marginTop: "50px"}}>
                                 <SurveyBtn
-
                                     content={(
                                         <span>Đánh giá lại</span>
                                     )}

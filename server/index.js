@@ -19,16 +19,20 @@ const loadDbInstances = (appDb) => {
     // Survey.deleteMany({}).then(() => console.log("Delete all surveys"))
     // Service.deleteMany({}).then(() => console.log("Delete all services"))
     // Location.deleteMany({}).then(() => console.log("Delete all locations"))
+    // User.deleteMany({}).then(() => console.log("Delete all users"))
     // Service.insertMany([
+    //     {name: "Phun xăm"},
+    //     {name: "Điều trị mụn sẹo"},
+    //     {name: "Tiểu phẫu"},
+    //     {name: "Triệt lông"},
     //     {name: "Chăm sóc da"},
-    //     {name: "Điều trị mụn"},
-    //     {name: "Tẩy da chết"},
-    //     {name: "Cải tạo da bằng công nghệ ABC"},
+    //     {name: "Giảm béo"},
     // ]).then(() => console.log("Insert temp services"))
     // Location.insertMany([
-    //     {name: "56 Phố Huế"},
-    //     {name: "125 Trần Duy Hưng"},
-    //     {name: "200 Phạm Văn Đồng"},
+    //     {name: "Hà Nội"},
+    //     {name: "Nha Trang"},
+    //     {name: "Sài Gòn"},
+    //     {name: "Cần Thơ"},
     // ]).then((data) => {
     //     console.log("Insert Location services")
     //     Promise.all([

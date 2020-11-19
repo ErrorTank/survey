@@ -58,18 +58,32 @@ const loadDbInstances = (appDb) => {
     //             location: data[1]._id
     //         }).save(),
     //         new User({
-    //             name: "Location Admin",
+    //             name: "Admin Ha Noi",
     //             role: 1,
-    //             username: "location_admin",
+    //             username: "admin_hanoi",
     //             password: "123456",
-    //             location: data[0]._id
+    //             location: data.find(each => each.name === "Hà Nội")._id
     //         }).save(),
     //         new User({
-    //             name: "Location Admin 2",
+    //             name: "Admin Nha Trang",
     //             role: 1,
-    //             username: "location_admin2",
+    //             username: "admin_nhatrang",
     //             password: "123456",
-    //             location: data[1]._id
+    //            location: data.find(each => each.name === "Nha Trang")._id
+    //         }).save(),
+    //         new User({
+    //             name: "Admin Can Tho",
+    //             role: 1,
+    //             username: "admin_cantho",
+    //             password: "123456",
+    //            location: data.find(each => each.name === "Cần Thơ")._id
+    //         }).save(),
+    //         new User({
+    //             name: "Admin Sai gon",
+    //             role: 1,
+    //             username: "admin_saigon",
+    //             password: "123456",
+    //            location: data.find(each => each.name === "Sài Gòn")._id
     //         }).save()
     //     ])
     // })

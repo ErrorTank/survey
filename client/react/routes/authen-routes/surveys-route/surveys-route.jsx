@@ -17,14 +17,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import {useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Rating from "@material-ui/lab/Rating";
+import DateFnsUtils from '@date-io/date-fns';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {locationApi} from "../../../../api/common/location";
 import {serviceApi} from "../../../../api/common/service";
+import {userInfo} from "../../../../lib/states/common";
 const ratingMatch = {
     1: "Chưa tốt",
     2: "Tạm ổn",
@@ -66,8 +67,10 @@ const SurveysRoute = () => {
     const [detail, setDetail] = React.useState(null);
     let [loading, setLoading] = React.useState(false);
     let [keyword, setKeyword] = React.useState("");
+    let [date, setDate] = React.useState(null);
     let [rating, setRating] = React.useState(0);
-    let [location, setLocation] = React.useState({_id: 1, name: "Tất cả"});
+    let role = userInfo.getState().role;
+    let [location, setLocation] = React.useState(role === 0 ? {_id: 1, name: "Tất cả"} : userInfo.getState().location);
     let [service, setService] = React.useState({_id: 1, name: "Tất cả"});
     let [locations, setLocations] = React.useState([]);
     let [services, setServices] = React.useState([]);
@@ -84,7 +87,7 @@ const SurveysRoute = () => {
     const api = React.useCallback(({ service, location, ...rest}) => {
         return customerApi.getCustomerSurveys({service: service._id, location: location._id, ...rest})
     }, [])
-    let filter = React.useMemo(() => ({keyword, rating, service, location}), [keyword, rating, service, location]);
+    let filter = React.useMemo(() => ({keyword, rating, service, location, date}), [keyword, rating, service, location, date]);
     let handleClickRow = React.useCallback((row) => {
         setDetail(row)
     }, []);
@@ -105,6 +108,7 @@ const SurveysRoute = () => {
     };
 
     return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <AuthenLayout>
             <div className="surveys-route">
                 <Dialog
@@ -218,7 +222,7 @@ const SurveysRoute = () => {
                                     {!loading && (
                                         <Grid spacing={2} alignItems={"center"}
                                               justify={"flex-start"} container>
-                                            <Grid item xs={6} sm={4}>
+                                            <Grid item xs={6} sm={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Đánh giá
@@ -229,7 +233,7 @@ const SurveysRoute = () => {
                                                         value={rating}
                                                         renderValue={value => {
 
-                                                            return ((value === 0 ) ? "Tất cả" : <span>{ratingMatch[each]}</span>)
+                                                            return ((value === 0 ) ? "Tất cả" : <span>{ratingMatch[value]}</span>)
                                                         }}
                                                         onChange={e => setRating(e.target.value)}
                                                         label="Đánh giá"
@@ -242,7 +246,7 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={6} sm={4}>
+                                            <Grid item xs={6} sm={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Cơ sở
@@ -253,6 +257,7 @@ const SurveysRoute = () => {
                                                         value={location._id}
                                                         onChange={handleChangeLocation}
                                                         label="Cơ sở"
+                                                        disabled={role === 1}
                                                     >
                                                         {locations.map(each => (
                                                             <MenuItem key={each._id}
@@ -263,7 +268,9 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={12} sm={4}>
+
+
+                                            <Grid item xs={12} sm={4} md={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Dịch vụ
@@ -284,27 +291,21 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-
-                                            <Grid item xs={12}>
-                                                <FormControl variant="outlined" fullWidth size={'small'}>
-                                                    <InputLabel id="demo-simple-select-outlined-label">
-                                                        Dịch vụ
-                                                    </InputLabel>
-                                                    <Select
-                                                        labelId="demo-simple-select-outlined-label"
-                                                        id="demo-simple-select-outlined"
-                                                        value={service._id}
-                                                        onChange={handleChangeService}
-                                                        label="Cơ sở"
-                                                    >
-                                                        {services.map(each => (
-                                                            <MenuItem key={each._id}
-                                                                      value={each._id}>{each.name}</MenuItem>
-                                                        ))}
-
-
-                                                    </Select>
-                                                </FormControl>
+                                            <Grid item xs={12} sm={4} md={3}>
+                                                <KeyboardDatePicker
+                                                    disableToolbar
+                                                    variant={"outlined"}
+                                                    style={{margin: 0}}
+                                                    format="dd/MM/yyyy"
+                                                    margin="normal"
+                                                    id="date-picker-inline"
+                                                    label="Lọc ngày"
+                                                    value={date}
+                                                    onChange={value => setDate(new Date(value).getTime())}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
                                             </Grid>
                                         </Grid>
                                     )}
@@ -325,6 +326,7 @@ const SurveysRoute = () => {
             </div>
 
         </AuthenLayout>
+        </MuiPickersUtilsProvider>
     );
 };
 

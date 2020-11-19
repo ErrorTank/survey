@@ -1,9 +1,10 @@
 const path = require("path");
-
+const fs = require("fs")
 require("dotenv").config({
     path: path.resolve(__dirname, process.env.NODE_ENV === "production" ? "./env/prod.env" : "./env/dev.env"),
 });
 const http = require("http");
+const https = require("https");
 const createExpressServer = require("./express");
 const app = createExpressServer();
 const createRoutes = require("./routes");
@@ -77,7 +78,24 @@ const loadDbInstances = (appDb) => {
 const startServer = () => new Promise((resolve) => {
 
     const port = process.env.PORT || 4000;
-    const server = http.createServer(app);
+    let environment = process.env.NODE_ENV;
+    const server = https.createServer(
+        {
+            key: fs.readFileSync(
+                path.join(
+                    __dirname,
+                    `./ssl/${environment}/${process.env.SSL_KEY_PATH}`
+                )
+            ),
+            cert: fs.readFileSync(
+                path.join(
+                    __dirname,
+                    `./ssl/${environment}/${process.env.SSL_CRT_PATH}`
+                )
+            ),
+        },
+        app
+    );
     app.use("/", createRoutes());
     app.use(errorHandlingMiddleware);
     server.listen(port, () => {

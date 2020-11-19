@@ -39,7 +39,7 @@ export const authenCache = (() => {
                     reject();
                 } else {
                     authApi.auth().then((user) => {
-                        if (!user) {
+                        if (!user && !user._id) {
                             reject();
                         } else {
                             userInfo.setState(user).then(() => {

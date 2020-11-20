@@ -17,15 +17,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import {useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Rating from "@material-ui/lab/Rating";
+import DateFnsUtils from '@date-io/date-fns';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {locationApi} from "../../../../api/common/location";
 import {serviceApi} from "../../../../api/common/service";
-
+import {userInfo} from "../../../../lib/states/common";
+const ratingMatch = {
+    1: "Chưa tốt",
+    2: "Tạm ổn",
+    3: "Hài lòng",
+    4: "Rất hài lòng"
+}
 const columns = [
     {
         key: "customer",
@@ -34,11 +40,7 @@ const columns = [
     }, {
         key: "rating",
         label: "Đánh giá",
-        render: row => <span className={classnames("rating-count", {
-            low: row.rating <= 2,
-            avg: row.rating > 2 && row.rating <= 4,
-            high: row.rating > 4
-        })}>{row.rating}/5</span>,
+        render: row => <span className={classnames("rating-count")}>{ratingMatch[row.rating]}</span>,
         sortable: true
     }, {
         key: "service",
@@ -65,8 +67,10 @@ const SurveysRoute = () => {
     const [detail, setDetail] = React.useState(null);
     let [loading, setLoading] = React.useState(false);
     let [keyword, setKeyword] = React.useState("");
+    let [date, setDate] = React.useState(null);
     let [rating, setRating] = React.useState(0);
-    let [location, setLocation] = React.useState({_id: 1, name: "Tất cả"});
+    let role = userInfo.getState().role;
+    let [location, setLocation] = React.useState(role === 0 ? {_id: 1, name: "Tất cả"} : userInfo.getState().location);
     let [service, setService] = React.useState({_id: 1, name: "Tất cả"});
     let [locations, setLocations] = React.useState([]);
     let [services, setServices] = React.useState([]);
@@ -83,7 +87,7 @@ const SurveysRoute = () => {
     const api = React.useCallback(({ service, location, ...rest}) => {
         return customerApi.getCustomerSurveys({service: service._id, location: location._id, ...rest})
     }, [])
-    let filter = React.useMemo(() => ({keyword, rating, service, location}), [keyword, rating, service, location]);
+    let filter = React.useMemo(() => ({keyword, rating, service, location, date}), [keyword, rating, service, location, date]);
     let handleClickRow = React.useCallback((row) => {
         setDetail(row)
     }, []);
@@ -104,6 +108,7 @@ const SurveysRoute = () => {
     };
 
     return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <AuthenLayout>
             <div className="surveys-route">
                 <Dialog
@@ -147,7 +152,7 @@ const SurveysRoute = () => {
                                 Đánh giá
                             </div>
                             <div className="sir-value highlight">
-                                <Rating name="size-large" value={Number(detail?.rating)} size="medium" readOnly/>
+                                <span className={classnames("rating-count")}>{ratingMatch[detail?.rating]}</span>
                             </div>
                         </div>
                         <div className="survey-info-row">
@@ -201,6 +206,7 @@ const SurveysRoute = () => {
                     <div className="route-body">
                         <div className="common-table-container">
                             <div className="ctc-toolbar">
+
                                 <Grid container  alignItems={"center"}>
                                     <Grid item xs={12} md={4} lg={3} className={"search"}>
                                         <SearchInput
@@ -208,10 +214,15 @@ const SurveysRoute = () => {
                                             onChange={keyword => setKeyword(keyword)}
                                         />
                                     </Grid>
+
+
+
+                                </Grid>
+                                <div style={{marginTop: "12px"}}>
                                     {!loading && (
-                                        <Grid xs={12} md={8} spacing={2} lg={9} alignItems={"center"}
-                                              justify={"flex-end"} container>
-                                            <Grid item xs={6} sm={3} lg={2}>
+                                        <Grid spacing={2} alignItems={"center"}
+                                              justify={"flex-start"} container>
+                                            <Grid item xs={6} sm={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Đánh giá
@@ -222,21 +233,20 @@ const SurveysRoute = () => {
                                                         value={rating}
                                                         renderValue={value => {
 
-                                                            return ((value === 0 ) ? "Tất cả" : <div>{value} <StarIcon fontSize={"small"}/></div>)
+                                                            return ((value === 0 ) ? "Tất cả" : <span>{ratingMatch[value]}</span>)
                                                         }}
                                                         onChange={e => setRating(e.target.value)}
                                                         label="Đánh giá"
                                                     >
-                                                        {[0, 1,2,3,4,5].map(each => (
+                                                        {[0, 1,2,3,4].map(each => (
                                                             <MenuItem key={each}
-                                                                      value={each}>{each === 0 ? "Tất cả" : <span>{each} <StarIcon fontSize={"small"}/></span>}</MenuItem>
+                                                                      value={each}>{each === 0 ? "Tất cả" : <span>{ratingMatch[each]}</span>}</MenuItem>
                                                         ))}
-
 
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={12} sm={4} lg={3}>
+                                            <Grid item xs={6} sm={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Cơ sở
@@ -247,6 +257,7 @@ const SurveysRoute = () => {
                                                         value={location._id}
                                                         onChange={handleChangeLocation}
                                                         label="Cơ sở"
+                                                        disabled={role === 1}
                                                     >
                                                         {locations.map(each => (
                                                             <MenuItem key={each._id}
@@ -257,7 +268,9 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            <Grid item xs={12} sm={4}  lg={3}>
+
+
+                                            <Grid item xs={12} sm={4} md={3}>
                                                 <FormControl variant="outlined" fullWidth size={'small'}>
                                                     <InputLabel id="demo-simple-select-outlined-label">
                                                         Dịch vụ
@@ -278,25 +291,25 @@ const SurveysRoute = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                            {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
-                                            {/*    <Select*/}
-
-                                            {/*        labelId="demo-simple-select-outlined-label"*/}
-                                            {/*        id="demo-simple-select-outlined"*/}
-                                            {/*        value={location._id}*/}
-                                            {/*        onChange={e => }*/}
-                                            {/*        label="Cơ sở"*/}
-                                            {/*    >*/}
-                                            {/*        {locations.map(each => (*/}
-                                            {/*            <MenuItem key={each._id} value={each._id}>{each.name}</MenuItem>*/}
-                                            {/*        ))}*/}
-
-                                            {/*    </Select>*/}
-                                            {/*</Grid>*/}
+                                            <Grid item xs={12} sm={4} md={3}>
+                                                <KeyboardDatePicker
+                                                    disableToolbar
+                                                    variant={"outlined"}
+                                                    style={{margin: 0}}
+                                                    format="dd/MM/yyyy"
+                                                    margin="normal"
+                                                    id="date-picker-inline"
+                                                    label="Lọc ngày"
+                                                    value={date}
+                                                    onChange={value => setDate(new Date(value).getTime())}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
+                                            </Grid>
                                         </Grid>
                                     )}
-
-                                </Grid>
+                                </div>
                             </div>
                             <div className="ctc-table">
                                 <PaginationDataTable
@@ -313,6 +326,7 @@ const SurveysRoute = () => {
             </div>
 
         </AuthenLayout>
+        </MuiPickersUtilsProvider>
     );
 };
 

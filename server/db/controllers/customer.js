@@ -30,7 +30,7 @@ const createCustomer = data => {
     return new Customer({name: name.trim(), phone: phone.trim(), customerID}).save()
 }
 
-const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc", skip = 0, limit = 10, location, service, rating}) => {
+const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc", skip = 0, limit = 10, location, service, rating, date}) => {
     return (Number(role) === 0 ? Promise.resolve() : User.findOne({
         _id: Object(_id)
     }).lean())
@@ -97,6 +97,29 @@ const getSurveys = ({role, _id}, {keyword, sortBy = "createdAt", order = "desc",
                         ]
                     },
                 });
+            }
+
+            if(date){
+                let d = new Date(Number(date));
+                console.log(date)
+                let day = d.getDate();
+                let month = d.getMonth() + 1;
+                let year = d.getFullYear();
+
+                pipelines = pipelines.concat([
+                    {
+                        $addFields: {
+                            test: { "$dateToString": { "format": "%Y-%m-%d", "date": "$createdAt" } }
+                        }
+                    },
+                    {
+                        $match: {
+                            test: `${year}-${month}-${day}`
+                        }
+                    }, {
+                        $unset: "test"
+                    }
+                ]);
             }
 
             if(Number(rating) > 0){

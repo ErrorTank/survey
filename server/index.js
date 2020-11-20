@@ -1,9 +1,10 @@
 const path = require("path");
-
+const fs = require("fs")
 require("dotenv").config({
     path: path.resolve(__dirname, process.env.NODE_ENV === "production" ? "./env/prod.env" : "./env/dev.env"),
 });
 const http = require("http");
+const https = require("https");
 const createExpressServer = require("./express");
 const app = createExpressServer();
 const createRoutes = require("./routes");
@@ -97,18 +98,32 @@ const loadDbInstances = (appDb) => {
     //             location: data[1]._id
     //         }).save(),
     //         new User({
-    //             name: "Location Admin",
+    //             name: "Admin Ha Noi",
     //             role: 1,
-    //             username: "location_admin",
+    //             username: "admin_hanoi",
     //             password: "123456",
-    //             location: data[0]._id
+    //             location: data.find(each => each.name === "Hà Nội")._id
     //         }).save(),
     //         new User({
-    //             name: "Location Admin 2",
+    //             name: "Admin Nha Trang",
     //             role: 1,
-    //             username: "location_admin2",
+    //             username: "admin_nhatrang",
     //             password: "123456",
-    //             location: data[1]._id
+    //            location: data.find(each => each.name === "Nha Trang")._id
+    //         }).save(),
+    //         new User({
+    //             name: "Admin Can Tho",
+    //             role: 1,
+    //             username: "admin_cantho",
+    //             password: "123456",
+    //            location: data.find(each => each.name === "Cần Thơ")._id
+    //         }).save(),
+    //         new User({
+    //             name: "Admin Sai gon",
+    //             role: 1,
+    //             username: "admin_saigon",
+    //             password: "123456",
+    //            location: data.find(each => each.name === "Sài Gòn")._id
     //         }).save()
     //     ])
     // })
@@ -117,6 +132,24 @@ const loadDbInstances = (appDb) => {
 const startServer = () => new Promise((resolve) => {
 
     const port = process.env.PORT || 4000;
+    let environment = process.env.NODE_ENV;
+    // const server = https.createServer(
+    //     {
+    //         key: fs.readFileSync(
+    //             path.join(
+    //                 __dirname,
+    //                 `./ssl/${environment}/${process.env.SSL_KEY_PATH}`
+    //             )
+    //         ),
+    //         cert: fs.readFileSync(
+    //             path.join(
+    //                 __dirname,
+    //                 `./ssl/${environment}/${process.env.SSL_CRT_PATH}`
+    //             )
+    //         ),
+    //     },
+    //     app
+    // );
     const server = http.createServer(app);
     app.use("/", createRoutes());
     app.use(errorHandlingMiddleware);

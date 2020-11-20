@@ -15,6 +15,46 @@ const loadDbInstances = (appDb) => {
     let Service = require("./db/model/service")(appDb);
     let Location = require("./db/model/location")(appDb);
     let User = require("./db/model/user")(appDb);
+    // Location.findOne({name: "Hà Nội"}).lean().then(loc => {
+    //     new User({
+    //         name: "TVHN",
+    //         role: 2,
+    //         username: "tvhn",
+    //         password: "123456",
+    //         location: loc._id
+    //         ,
+    //     }).save()
+    // })
+    // Location.findOne({name: "Nha Trang"}).lean().then(loc => {
+    //     new User({
+    //         name: "TVNT",
+    //         role: 2,
+    //         username: "tvnt",
+    //         password: "123456",
+    //         location: loc._id
+    //         ,
+    //     }).save()
+    // })
+    // Location.findOne({name: "Sài Gòn"}).lean().then(loc => {
+    //     new User({
+    //         name: "TVSG",
+    //         role: 2,
+    //         username: "tvsg",
+    //         password: "123456",
+    //         location: loc._id
+    //         ,
+    //     }).save()
+    // })
+    // Location.findOne({name: "Cần Thơ"}).lean().then(loc => {
+    //     new User({
+    //         name: "TVCT",
+    //         role: 2,
+    //         username: "tvct",
+    //         password: "123456",
+    //         location: loc._id
+    //         ,
+    //     }).save()
+    // })
     // Customer.deleteMany({}).then(() => console.log("Delete all customers"))
     // Survey.deleteMany({}).then(() => console.log("Delete all surveys"))
     // Service.deleteMany({}).then(() => console.log("Delete all services"))

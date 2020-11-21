@@ -96,6 +96,13 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             },
             {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                }
+            },
+            {
                 test: /\.(js|jsx)$/,
                 include: path.join(__dirname, 'client'),
                 use: [

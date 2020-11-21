@@ -105,3 +105,5 @@ yup.addMethod(yup.date, "notReach", function (message) {
         }
     })
 });
+
+export const  a = 2

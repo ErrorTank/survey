@@ -3,7 +3,7 @@ import {Router, Switch, Redirect} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import {GuessRoute} from "./routes/types/guess-route";
 
-require("./common/yup-config");
+import("./common/yup-config")
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';

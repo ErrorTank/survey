@@ -96,7 +96,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-                test: /\.jsx?$/,
+                test: /\.(js|jsx)$/,
                 include: path.join(__dirname, 'client'),
                 use: [
                     {
@@ -106,7 +106,7 @@ module.exports = {
                         }
                     }
                 ],
-                exclude: /node_modules/
+                // exclude: /node_modules/
             }, {
                 test: /\.styl$/,
                 include: path.join(__dirname, 'client'),

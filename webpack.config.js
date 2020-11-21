@@ -5,6 +5,7 @@ const EventHooksPlugin = require("event-hooks-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const env = dotenv.config({ path: "./client/env/dev.env" }).parsed;
 const spawn = require("child_process").spawn;
+const TerserPlugin = require('terser-webpack-plugin');
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -29,16 +30,33 @@ module.exports = {
     extensions: [".js", ".jsx", ".styl"],
   },
   optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      parallel: 4,
+      terserOptions: {
+        compress: {
+          inline: true
+        }
+      }
+    })],
+    runtimeChunk: 'single',
     splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: "all",
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
         },
       },
     },
+
   },
+
   plugins: [
 
     new webpack.ProgressPlugin(),
@@ -75,7 +93,7 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         use: [
           {
             loader: "babel-loader",

@@ -21,7 +21,8 @@ export const registerServiceWorker = () => {
 };
 
 
-registerServiceWorker().then(() => appLoader.init().then(() => {
-    ReactDOM.render(<App/>, document.getElementById("app"));
-}))
+// registerServiceWorker().then(() =>
+    appLoader.init().then(() => {
+    ReactDOM.render(<App/>, document.getElementById("app"));})
+// )
 
